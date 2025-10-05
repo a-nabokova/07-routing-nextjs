@@ -5,13 +5,13 @@ import css from './page.module.css'
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import SearchBox from '../../components/SearchBox/SearchBox';
-import Pagination from '../../components/Pagination/Pagination';
-import NoteList from '../../components/NoteList/NoteList';
-import Modal from '../../components/Modal/Modal'
-import NoteForm from '../../components/NoteForm/NoteForm';
-import fetchNotes from '../../lib/api';
- 
+import SearchBox from '@/components/SearchBox/SearchBox';
+import Pagination from '@/components/Pagination/Pagination';
+import NoteList from '@/components/NoteList/NoteList';
+import Modal from '@/components/Modal/Modal'
+import NoteForm from '@/components/NoteForm/NoteForm';
+import fetchNotes from '@/lib/api';
+ import { useParams } from 'next/navigation';
 const PER_PAGE = 12;
 
 
@@ -19,6 +19,9 @@ const NotesClient = () => {
     const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+
+    const params = useParams();
+  const tag = Array.isArray(params.slug) ? params.slug[0] : undefined;
   
 
    const handleSeaarch = useDebouncedCallback((value: string) => {
@@ -32,7 +35,12 @@ const NotesClient = () => {
   
   const { data, isLoading, isError} = useQuery({
     queryKey: ['notes', currentPage, searchValue],
-     queryFn: () => fetchNotes(currentPage, PER_PAGE, searchValue),
+     queryFn: () => fetchNotes({
+        page: currentPage,
+        perPage: PER_PAGE,
+        search: searchValue,
+        ...(tag && tag !== 'All' ? { tag } : {}),  
+      }),
     placeholderData: keepPreviousData,
 
   })

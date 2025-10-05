@@ -10,13 +10,21 @@ interface FetchNotesResponse {
     
 }
 
+interface FetchNotesOptions {
+  page: number;
+  perPage: number;
+  search?: string;
+  tag?: string;
+}
+
  
-export default async function fetchNotes(page: number, perPage: number, search?: string) {
+export default async function fetchNotes({ page, perPage, search, tag }: FetchNotesOptions) {
      const res = await axios.get<FetchNotesResponse>('https://notehub-public.goit.study/api/notes', {
         params: {
             page,
             perPage,
-            search,  
+             search,  
+            ...(tag ? { tag } : {})
         },
         headers: {
             Authorization: `Bearer ${token}`
