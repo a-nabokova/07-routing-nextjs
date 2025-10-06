@@ -6,8 +6,8 @@ import Link from 'next/link';
 
 const SidebarNotes = ( ) => {
 
-const tags: NoteTag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
-
+  const tags: (NoteTag | 'All')[] = ['All', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
+  
     return (
         
           <ul className={css.menuList}>

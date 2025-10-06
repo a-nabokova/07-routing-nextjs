@@ -9,7 +9,9 @@ interface PageProps {
   searchParams: { search?: string; page?: string };
 }
 
-export default async function NotesPage({ params, searchParams }: PageProps) {
+export default async function NotesPage(propsPromise: Promise<PageProps>) {
+    const { params, searchParams } = await propsPromise;
+
   const queryClient = new QueryClient();
 
   const search = searchParams.search ?? '';
@@ -31,7 +33,7 @@ export default async function NotesPage({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient />
+      <NotesClient tag={tag} />
     </HydrationBoundary>
   );
 };
