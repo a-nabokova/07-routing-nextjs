@@ -1,6 +1,6 @@
  import { getSingleNote } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
-import NotePreview from '@/components/NotePreview/NotePreview';
+import NotePreview from '@/app/@modal/(.)notes/[id]/NotePreview.client';
  
 interface Props {
   params: Promise<{id: string}>;
